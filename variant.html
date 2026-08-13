@@ -455,6 +455,10 @@
     color: var(--accent);
     transform: translateX(4px);
   }
+  .experience-dates .date-range.active {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
   .experience-dates .date-range:last-child { margin-bottom: 0; }
   .experience-entries {
     border-left: 2px solid var(--border);
@@ -5180,6 +5184,22 @@ footer {
   }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' });
 
   sections.forEach(s => sectionObserver.observe(s));
+
+  // ── Active date range on scroll ──
+  const roles = document.querySelectorAll('.role');
+  const dateRanges = document.querySelectorAll('.date-range');
+
+  const roleObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        dateRanges.forEach(d => d.classList.remove('active'));
+        const activeDate = document.querySelector('.date-range[href="#' + entry.target.id + '"]');
+        if (activeDate) activeDate.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' });
+
+  roles.forEach(r => roleObserver.observe(r));
 
   // ── Service item toggle ──
   const serviceItems = document.querySelectorAll('.service-item');
